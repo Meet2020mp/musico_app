@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:musico/models/music.dart';
 import 'package:musico/screens/home.dart';
+import 'package:musico/screens/playlists.dart';
 import 'package:musico/screens/search.dart';
 import 'package:musico/screens/yourlibrary.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -12,6 +14,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+void initStrate(){
+  super.initState();
+  requestPermission();
+}
+void requestPermission(){
+  Permission.storage.request();
+}
   var Tabs = [];
   int currentTabIndex = 0;
  Music? music;
@@ -48,7 +58,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Tabs= [Home(miniPlayer), Search(), Yourlibrary()];
+    Tabs= [Home(miniPlayer), Search(), Yourlibrary(),PlayLists()];
   }
   //whole UI of the applivation goes inside build method of MyAppStateState class..
   @override
@@ -68,7 +78,8 @@ class _MyAppState extends State<MyApp> {
                 //setState is used so app will be rerendered every time it changes currentIndex of bottomNavigationBar.
                 setState(() {});
               },
-              backgroundColor: Colors.black45,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.black,
               unselectedItemColor: Colors.white,
               selectedItemColor: Colors.tealAccent[400],
               items: [
@@ -87,7 +98,13 @@ class _MyAppState extends State<MyApp> {
                       Icons.library_add,
                       color: Colors.white,
                     ),
-                    label: 'Your library')
+                    label: 'Your library'),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.library_add_check,
+                      color: Colors.white,
+                    ),
+                    label: 'playlists'),
               ]),
         ],
       ),
